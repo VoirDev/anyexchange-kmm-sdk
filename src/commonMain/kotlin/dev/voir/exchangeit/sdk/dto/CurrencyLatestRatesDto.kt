@@ -3,9 +3,9 @@ package dev.voir.exchangeit.sdk.dto
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class CurrencyRateWithDateDto(
+data class CurrencyLatestRatesDto(
     val code: String,
-    val rate: Double,
-    val date: String,
-    val fluctuation: Double
+    val title: String,
+    val rates: List<CurrencyLatestRateDto>
 )
+

@@ -3,31 +3,35 @@ package dev.voir.exchangeit.sdk
 import dev.voir.exchangeit.sdk.dto.*
 
 interface IExchangeItSDK {
-    suspend fun getCurrencies(crypto: Boolean? = null, search: String? = null): ListDto<CurrencyDto>
+    suspend fun getCurrencies(crypto: Boolean? = null, search: String? = null, withObsolete: Boolean? = null, withNoRates: Boolean? = null): ListDto<CurrencyDto>
 
-    suspend fun getCurrencyDetailed(base: String): DataDto<CurrencyDetailedDto>
+    suspend fun getCurrencyDetailed(alias: String): DataDto<CurrencyDetailedDto>
 
-    suspend fun getLatestRates(codes: List<String>): ListDto<CurrencyWithLatestRatesDto>
+    suspend fun getLatestRates(alias: String, forAliases: List<String>? = null): DataDto<CurrencyLatestRatesDto>
 
-    suspend fun getLatestRates(base: String, codes: List<String>? = null): DataDto<CurrencyWithLatestRatesDto>
-
-    suspend fun getDailyRates(
-        base: String,
-        date: String? = null,
-        codes: List<String>? = null
-    ): DataDto<CurrencyWithRatesDto>
+    suspend fun getLatestRates(aliases: List<String>): DataDto<RatesDto>
 
     suspend fun getHistoricalRates(
-        base: String,
+        alias: String,
+        date: String,
+        forAliases: List<String>? = null
+    ): DataDto<CurrencyRateByDateDto>
+
+    suspend fun getHistoricalRates(
+        alias: String,
         start: String,
         end: String,
-        codes: List<String>? = null
+        forAliases: List<String>? = null
     ): DataDto<CurrencyHistoricalRatesDto>
 
     suspend fun getMonthlyRates(
-        base: String,
+        alias: String,
         start: String,
         end: String,
-        codes: List<String>? = null
+        forAliases: List<String>? = null
     ): DataDto<CurrencyMonthlyRatesDto>
+
+    suspend fun getSources(): ListDto<SourceDto>
+
+    suspend fun getSource(alias: String): DataDto<SourceDto>
 }

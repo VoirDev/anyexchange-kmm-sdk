@@ -5,5 +5,5 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class CurrencyMonthRateDto(
     val month: String,
-    val rates: List<CurrencyRateDto>
+    val rates: List<SimpleCurrencyRateDto>
 )

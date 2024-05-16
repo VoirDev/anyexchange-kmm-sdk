@@ -36,11 +36,6 @@ class ExchangeItSDK(engine: HttpClientEngine) : IExchangeItSDK {
                 prettyPrint = true
             })
         }
-        /*
-        install(Logging) {
-            logger = Logger.DEFAULT
-        }
-         */
     }.apply {
         sendPipeline.intercept(HttpSendPipeline.Before) {
             try {
@@ -51,64 +46,80 @@ class ExchangeItSDK(engine: HttpClientEngine) : IExchangeItSDK {
         }
     }
 
-    override suspend fun getCurrencies(crypto: Boolean?, search: String?): ListDto<CurrencyDto> {
-        return client.get("currencies") {
+    override suspend fun getCurrencies(
+        crypto: Boolean?,
+        search: String?,
+        withObsolete: Boolean?,
+        withNoRates: Boolean?
+    ): ListDto<CurrencyDto> {
+        return client.get("v1/currencies") {
             parameter("crypto", crypto)
             parameter("search", search)
+            parameter("withObsolete", withObsolete)
+            parameter("withNoRates", withNoRates)
         }.bodyOrThrow()
     }
 
-    override suspend fun getCurrencyDetailed(base: String): DataDto<CurrencyDetailedDto> {
-        return client.get("currencies/${base}").bodyOrThrow()
+    override suspend fun getCurrencyDetailed(alias: String): DataDto<CurrencyDetailedDto> {
+        return client.get("v1/currencies/${alias}").bodyOrThrow()
     }
 
-    override suspend fun getLatestRates(codes: List<String>): ListDto<CurrencyWithLatestRatesDto> {
-        return client.get("rates/latest") {
-            parameter("codes", codes.joinToString(","))
+    override suspend fun getLatestRates(alias: String, forAliases: List<String>?): DataDto<CurrencyLatestRatesDto> {
+        return client.get("v1/currencies/${alias}/latest") {
+            parameter("for", forAliases)
         }.bodyOrThrow()
     }
 
-    override suspend fun getLatestRates(base: String, codes: List<String>?): DataDto<CurrencyWithLatestRatesDto> {
-        return client.get("currencies/${base}/latest") {
-            parameter("codes", codes)
+    override suspend fun getLatestRates(aliases: List<String>): DataDto<RatesDto> {
+        return client.get("v1/rates/latest") {
+            parameter("aliases", aliases.joinToString(","))
         }.bodyOrThrow()
     }
 
-    override suspend fun getDailyRates(
-        base: String,
-        date: String?,
-        codes: List<String>?
-    ): DataDto<CurrencyWithRatesDto> {
-        return client.get("currencies/${base}/daily") {
+
+    override suspend fun getHistoricalRates(
+        alias: String,
+        date: String,
+        forAliases: List<String>?
+    ): DataDto<CurrencyRateByDateDto> {
+        return client.get("v1/currencies/${alias}/historical") {
             parameter("date", date)
-            parameter("codes", codes)
+            parameter("for", forAliases)
         }.bodyOrThrow()
     }
 
     override suspend fun getHistoricalRates(
-        base: String,
+        alias: String,
         start: String,
         end: String,
-        codes: List<String>?
+        forAliases: List<String>?
     ): DataDto<CurrencyHistoricalRatesDto> {
-        return client.get("currencies/${base}/historical") {
+        return client.get("v1/currencies/${alias}/range") {
             parameter("start", start)
             parameter("end", end)
-            parameter("codes", codes)
+            parameter("for", forAliases)
         }.bodyOrThrow()
     }
 
     override suspend fun getMonthlyRates(
-        base: String,
+        alias: String,
         start: String,
         end: String,
-        codes: List<String>?
+        forAliases: List<String>?
     ): DataDto<CurrencyMonthlyRatesDto> {
-        return client.get("currencies/${base}/monthly") {
+        return client.get("v1/currencies/${alias}/monthly") {
             parameter("start", start)
             parameter("end", end)
-            parameter("codes", codes)
+            parameter("for", forAliases)
         }.bodyOrThrow()
+    }
+
+    override suspend fun getSources(): ListDto<SourceDto> {
+        return client.get("v1/sources") { }.bodyOrThrow()
+    }
+
+    override suspend fun getSource(alias: String): DataDto<SourceDto> {
+        return client.get("v1/sources/${alias}") { }.bodyOrThrow()
     }
 
     private suspend inline fun <reified T> HttpResponse.bodyOrThrow(): T {

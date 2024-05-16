@@ -37,10 +37,10 @@ kotlin {
             implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.3")
 
             // https://mvnrepository.com/artifact/io.ktor/ktor-client-core
-            implementation("io.ktor:ktor-client-core:2.3.10")
-            implementation("io.ktor:ktor-client-content-negotiation:2.3.10")
-            implementation("io.ktor:ktor-client-serialization:2.3.10")
-            implementation("io.ktor:ktor-serialization-kotlinx-json:2.3.10")
+            implementation("io.ktor:ktor-client-core:2.3.11")
+            implementation("io.ktor:ktor-client-content-negotiation:2.3.11")
+            implementation("io.ktor:ktor-client-serialization:2.3.11")
+            implementation("io.ktor:ktor-serialization-kotlinx-json:2.3.11")
             //implementation("io.ktor:ktor-client-logging:2.3.8")
 
             //implementation("ch.qos.logback:logback-classic:1.4.14")
@@ -57,12 +57,12 @@ kotlin {
             implementation(kotlin("stdlib-jdk8"))
 
             // https://mvnrepository.com/artifact/io.ktor/ktor-client-core
-            implementation("io.ktor:ktor-client-okhttp:2.3.10")
+            implementation("io.ktor:ktor-client-okhttp:2.3.11")
         }
 
         iosMain.dependencies {
             // https://mvnrepository.com/artifact/io.ktor/ktor-client-core
-            implementation("io.ktor:ktor-client-darwin:2.3.10")
+            implementation("io.ktor:ktor-client-darwin:2.3.11")
         }
     }
 }

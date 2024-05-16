@@ -4,6 +4,6 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class SimpleCurrencyRateDto(
-    val code: String,
+    val alias: String,
     val rate: Double
 )

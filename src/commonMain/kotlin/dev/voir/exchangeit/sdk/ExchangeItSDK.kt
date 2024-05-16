@@ -36,11 +36,6 @@ class ExchangeItSDK(engine: HttpClientEngine) : IExchangeItSDK {
                 prettyPrint = true
             })
         }
-        /*
-        install(Logging) {
-            logger = Logger.DEFAULT
-        }
-         */
     }.apply {
         sendPipeline.intercept(HttpSendPipeline.Before) {
             try {
@@ -54,66 +49,68 @@ class ExchangeItSDK(engine: HttpClientEngine) : IExchangeItSDK {
     override suspend fun getCurrencies(
         crypto: Boolean?,
         search: String?,
-        withObsolete: Boolean?
+        withObsolete: Boolean?,
+        withNoRates: Boolean?
     ): ListDto<CurrencyDto> {
         return client.get("v1/currencies") {
             parameter("crypto", crypto)
             parameter("search", search)
             parameter("withObsolete", withObsolete)
+            parameter("withNoRates", withNoRates)
         }.bodyOrThrow()
     }
 
-    override suspend fun getCurrencyDetailed(code: String): DataDto<CurrencyDetailedDto> {
-        return client.get("v1/currencies/${code}").bodyOrThrow()
+    override suspend fun getCurrencyDetailed(alias: String): DataDto<CurrencyDetailedDto> {
+        return client.get("v1/currencies/${alias}").bodyOrThrow()
     }
 
-    override suspend fun getLatestRates(code: String, forCodes: List<String>?): DataDto<CurrencyLatestRatesDto> {
-        return client.get("v1/currencies/${code}/latest") {
-            parameter("for", forCodes)
+    override suspend fun getLatestRates(alias: String, forAliases: List<String>?): DataDto<CurrencyLatestRatesDto> {
+        return client.get("v1/currencies/${alias}/latest") {
+            parameter("for", forAliases)
         }.bodyOrThrow()
     }
 
-    override suspend fun getLatestRates(codes: List<String>): DataDto<RatesDto> {
+    override suspend fun getLatestRates(aliases: List<String>): DataDto<RatesDto> {
         return client.get("v1/rates/latest") {
-            parameter("codes", codes.joinToString(","))
+            parameter("aliases", aliases.joinToString(","))
         }.bodyOrThrow()
     }
 
 
     override suspend fun getHistoricalRates(
-        code: String,
+        alias: String,
         date: String,
-        forCodes: List<String>?
+        forAliases: List<String>?
     ): DataDto<CurrencyRateByDateDto> {
-        return client.get("v1/currencies/${code}/historical") {
+        return client.get("v1/currencies/${alias}/historical") {
             parameter("date", date)
-            parameter("for", forCodes)
+            parameter("for", forAliases)
         }.bodyOrThrow()
     }
 
     override suspend fun getHistoricalRates(
-        code: String,
+        alias: String,
         start: String,
         end: String,
-        forCodes: List<String>?
+        forAliases: List<String>?
     ): DataDto<CurrencyHistoricalRatesDto> {
-        return client.get("v1/currencies/${code}/range") {
+        return client.get("v1/currencies/${alias}/range") {
             parameter("start", start)
             parameter("end", end)
-            parameter("for", forCodes)
+            parameter("for", forAliases)
         }.bodyOrThrow()
     }
 
     override suspend fun getMonthlyRates(
-        code: String,
+        alias: String,
         start: String,
         end: String,
-        forCodes: List<String>?
+        forAliases: List<String>?
     ): DataDto<CurrencyMonthlyRatesDto> {
-        return client.get("v1/currencies/${code}/monthly") {
+        return client.get("v1/currencies/${alias}/monthly") {
             parameter("start", start)
             parameter("end", end)
-            parameter("for", forCodes)
+            parameter("for", forAliases)
         }.bodyOrThrow()
     }
 

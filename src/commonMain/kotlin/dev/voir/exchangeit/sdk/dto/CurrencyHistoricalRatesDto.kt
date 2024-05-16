@@ -4,7 +4,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class CurrencyHistoricalRatesDto(
-    val code: String,
+    val alias: String,
     val title: String,
     val start: String,
     val end: String,

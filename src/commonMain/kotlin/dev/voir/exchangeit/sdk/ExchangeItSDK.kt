@@ -64,9 +64,14 @@ class ExchangeItSDK(engine: HttpClientEngine) : IExchangeItSDK {
         return client.get("v1/currencies/${alias}").bodyOrThrow()
     }
 
-    override suspend fun getLatestRates(alias: String, forAliases: List<String>?): DataDto<CurrencyLatestRatesDto> {
+    override suspend fun getLatestRates(
+        alias: String,
+        forAliases: List<String>?,
+        forPopular: Int?
+    ): DataDto<CurrencyLatestRatesDto> {
         return client.get("v1/currencies/${alias}/latest") {
             parameter("for", forAliases)
+            parameter("forPopular", forPopular)
         }.bodyOrThrow()
     }
 
@@ -76,15 +81,16 @@ class ExchangeItSDK(engine: HttpClientEngine) : IExchangeItSDK {
         }.bodyOrThrow()
     }
 
-
     override suspend fun getHistoricalRates(
         alias: String,
         date: String,
-        forAliases: List<String>?
+        forAliases: List<String>?,
+        forPopular: Int?,
     ): DataDto<CurrencyRateByDateDto> {
         return client.get("v1/currencies/${alias}/historical") {
             parameter("date", date)
             parameter("for", forAliases)
+            parameter("forPopular", forPopular)
         }.bodyOrThrow()
     }
 
@@ -92,12 +98,14 @@ class ExchangeItSDK(engine: HttpClientEngine) : IExchangeItSDK {
         alias: String,
         start: String,
         end: String,
-        forAliases: List<String>?
+        forAliases: List<String>?,
+        forPopular: Int?,
     ): DataDto<CurrencyHistoricalRatesDto> {
         return client.get("v1/currencies/${alias}/range") {
             parameter("start", start)
             parameter("end", end)
             parameter("for", forAliases)
+            parameter("forPopular", forPopular)
         }.bodyOrThrow()
     }
 
@@ -105,12 +113,14 @@ class ExchangeItSDK(engine: HttpClientEngine) : IExchangeItSDK {
         alias: String,
         start: String,
         end: String,
-        forAliases: List<String>?
+        forAliases: List<String>?,
+        forPopular: Int?,
     ): DataDto<CurrencyMonthlyRatesDto> {
         return client.get("v1/currencies/${alias}/monthly") {
             parameter("start", start)
             parameter("end", end)
             parameter("for", forAliases)
+            parameter("forPopular", forPopular)
         }.bodyOrThrow()
     }
 
@@ -120,6 +130,18 @@ class ExchangeItSDK(engine: HttpClientEngine) : IExchangeItSDK {
 
     override suspend fun getSource(alias: String): DataDto<SourceDto> {
         return client.get("v1/sources/${alias}") { }.bodyOrThrow()
+    }
+
+    override suspend fun convert(
+        amount: Double,
+        from: String,
+        to: String
+    ): DataDto<ConvertResultDto> {
+        return client.get("v1/converter") {
+            parameter("amount", amount)
+            parameter("from", from)
+            parameter("to", to)
+        }.bodyOrThrow()
     }
 
     private suspend inline fun <reified T> HttpResponse.bodyOrThrow(): T {

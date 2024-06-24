@@ -1,6 +1,6 @@
 plugins {
-    kotlin("multiplatform") version "1.9.23"
-    kotlin("plugin.serialization") version "1.9.23"
+    kotlin("multiplatform") version "2.0.0"
+    kotlin("plugin.serialization") version "2.0.0"
     id("maven-publish")
     id("signing")
 }
@@ -20,7 +20,7 @@ allprojects {
 
 
 group = "dev.voir"
-version = "1.0.3"
+version = "1.0.4"
 
 kotlin {
     jvm()
@@ -31,24 +31,21 @@ kotlin {
     sourceSets {
         commonMain.dependencies {
             // https://mvnrepository.com/artifact/org.jetbrains.kotlinx/kotlinx-coroutines-core
-            implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.0")
+            implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.1")
 
             // https://mvnrepository.com/artifact/org.jetbrains.kotlinx/kotlinx-serialization-json
-            implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.3")
+            implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.7.0")
 
             // https://mvnrepository.com/artifact/io.ktor/ktor-client-core
-            implementation("io.ktor:ktor-client-core:2.3.11")
-            implementation("io.ktor:ktor-client-content-negotiation:2.3.11")
-            implementation("io.ktor:ktor-client-serialization:2.3.11")
-            implementation("io.ktor:ktor-serialization-kotlinx-json:2.3.11")
-            //implementation("io.ktor:ktor-client-logging:2.3.8")
-
-            //implementation("ch.qos.logback:logback-classic:1.4.14")
+            implementation("io.ktor:ktor-client-core:2.3.12")
+            implementation("io.ktor:ktor-client-content-negotiation:2.3.12")
+            implementation("io.ktor:ktor-client-serialization:2.3.12")
+            implementation("io.ktor:ktor-serialization-kotlinx-json:2.3.12")
         }
 
         commonTest.dependencies {
             // https://mvnrepository.com/artifact/org.jetbrains.kotlinx/kotlinx-coroutines-test
-            implementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.8.0")
+            implementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.8.1")
 
             implementation(kotlin("test"))
         }
@@ -57,12 +54,12 @@ kotlin {
             implementation(kotlin("stdlib-jdk8"))
 
             // https://mvnrepository.com/artifact/io.ktor/ktor-client-core
-            implementation("io.ktor:ktor-client-okhttp:2.3.11")
+            implementation("io.ktor:ktor-client-okhttp:2.3.12")
         }
 
         iosMain.dependencies {
             // https://mvnrepository.com/artifact/io.ktor/ktor-client-core
-            implementation("io.ktor:ktor-client-darwin:2.3.11")
+            implementation("io.ktor:ktor-client-darwin:2.3.12")
         }
     }
 }
@@ -94,7 +91,7 @@ publishing {
     publications.withType<MavenPublication> {
         artifactId = "exchangeit-sdk"
         groupId = "dev.voir"
-        version = "1.0.3"
+        version = "1.0.4"
 
         artifact(tasks.register("${name}JavadocJar", Jar::class) {
             archiveClassifier.set("javadoc")

@@ -17,6 +17,8 @@ data class CurrencyDetailedDto(
     val popular: Boolean,
     val rating: Int? = null,
     val hasRates: Boolean,
+    val flag: CurrencyFlagDto? = null,
+    val logo: CurrencyImageDto? = null,
     val description: String? = null,
     val localizedDescription: Map<String, String>,
     val centralBanks: List<CentralBankDto>

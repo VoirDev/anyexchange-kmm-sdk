@@ -17,4 +17,6 @@ data class CurrencyDto(
     val popular: Boolean,
     val rating: Int? = null,
     val hasRates: Boolean,
+    val flag: CurrencyFlagDto? = null,
+    val logo: CurrencyImageDto? = null,
 )

@@ -64,6 +64,7 @@ class ExchangeItSDK(engine: HttpClientEngine) : IExchangeItSDK {
         return client.get("v1/currencies/${alias}").bodyOrThrow()
     }
 
+    @Deprecated("Will be replaced", replaceWith = ReplaceWith("getLatestRatesV2"))
     override suspend fun getLatestRates(
         alias: String,
         forAliases: List<String>?,
@@ -75,12 +76,31 @@ class ExchangeItSDK(engine: HttpClientEngine) : IExchangeItSDK {
         }.bodyOrThrow()
     }
 
+    override suspend fun getLatestRatesV2(
+        alias: String,
+        forAliases: List<String>?,
+        forPopular: Int?
+    ): DataDto<CurrencyLatestRatesDto> {
+        return client.get("v2/currencies/${alias}/latest") {
+            parameter("for", forAliases)
+            parameter("forPopular", forPopular)
+        }.bodyOrThrow()
+    }
+
+    @Deprecated("Will be replaced", replaceWith = ReplaceWith("getLatestRatesV2"))
     override suspend fun getLatestRates(aliases: List<String>): DataDto<RatesDto> {
         return client.get("v1/rates/latest") {
             parameter("aliases", aliases.joinToString(","))
         }.bodyOrThrow()
     }
 
+    override suspend fun getLatestRatesV2(aliases: List<String>): DataDto<RatesDto> {
+        return client.get("v2/rates/latest") {
+            parameter("aliases", aliases.joinToString(","))
+        }.bodyOrThrow()
+    }
+
+    @Deprecated("Will be replaced", replaceWith = ReplaceWith("getHistoricalRatesV2"))
     override suspend fun getHistoricalRates(
         alias: String,
         date: String,
@@ -94,6 +114,20 @@ class ExchangeItSDK(engine: HttpClientEngine) : IExchangeItSDK {
         }.bodyOrThrow()
     }
 
+    override suspend fun getHistoricalRatesV2(
+        alias: String,
+        date: String,
+        forAliases: List<String>?,
+        forPopular: Int?,
+    ): DataDto<CurrencyRateByDateDto> {
+        return client.get("v2/currencies/${alias}/historical") {
+            parameter("date", date)
+            parameter("for", forAliases)
+            parameter("forPopular", forPopular)
+        }.bodyOrThrow()
+    }
+
+    @Deprecated("Will be replaced", replaceWith = ReplaceWith("getHistoricalRatesV2"))
     override suspend fun getHistoricalRates(
         alias: String,
         start: String,
@@ -109,6 +143,22 @@ class ExchangeItSDK(engine: HttpClientEngine) : IExchangeItSDK {
         }.bodyOrThrow()
     }
 
+    override suspend fun getHistoricalRatesV2(
+        alias: String,
+        start: String,
+        end: String,
+        forAliases: List<String>?,
+        forPopular: Int?,
+    ): DataDto<CurrencyHistoricalRatesDto> {
+        return client.get("v2/currencies/${alias}/range") {
+            parameter("start", start)
+            parameter("end", end)
+            parameter("for", forAliases)
+            parameter("forPopular", forPopular)
+        }.bodyOrThrow()
+    }
+
+    @Deprecated("Will be replaced", replaceWith = ReplaceWith("getMonthlyRatesV2"))
     override suspend fun getMonthlyRates(
         alias: String,
         start: String,
@@ -117,6 +167,21 @@ class ExchangeItSDK(engine: HttpClientEngine) : IExchangeItSDK {
         forPopular: Int?,
     ): DataDto<CurrencyMonthlyRatesDto> {
         return client.get("v1/currencies/${alias}/monthly") {
+            parameter("start", start)
+            parameter("end", end)
+            parameter("for", forAliases)
+            parameter("forPopular", forPopular)
+        }.bodyOrThrow()
+    }
+
+    override suspend fun getMonthlyRatesV2(
+        alias: String,
+        start: String,
+        end: String,
+        forAliases: List<String>?,
+        forPopular: Int?,
+    ): DataDto<CurrencyMonthlyRatesDto> {
+        return client.get("v2/currencies/${alias}/monthly") {
             parameter("start", start)
             parameter("end", end)
             parameter("for", forAliases)
